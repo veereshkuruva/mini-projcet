@@ -4,13 +4,17 @@ import Container from 'react-bootstrap/Container'
 import Badge from '@mui/material/Badge';
 import Nav from 'react-bootstrap/Nav'
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from 'react-bootstrap/esm/Table';
-import { DLT } from '../redux/actions/action';
+import { DLT } from '../Redux/Action/Action';
+import Swal from 'sweetalert2';
+
 
 const Header = () => {
+
+    const [data,setData] = useState([]);
 
     const [price,setPrice] = useState(0);
     // console.log(price);
@@ -46,6 +50,29 @@ const Header = () => {
     useEffect(()=>{
         total();
     },[total])
+
+    const order = () => {
+
+        if(getdata.length<2){
+            Swal.fire({
+            icon: 'error',
+            title: 'Oops...😥😫',
+            text: 'Order at least 2 item.',
+          
+          })
+        }else{
+    
+          Swal.fire(
+            'Ordered sucessfull💙💚🧡!',
+            'You clicked the button!',
+            'success'
+          )
+          getdata.length=0
+        }
+        
+      }
+
+       
 
     return (
         <>
@@ -104,13 +131,14 @@ const Header = () => {
                                                             <p>{e.rname}</p>
                                                             <p>Price : ₹{e.price}</p>
                                                             <p>Quantity : {e.qnty}</p>
-                                                            <p style={{color:"red",fontSize:20,cursor:"pointer"}} onClick={()=>dlt(e.id)}>
+                                                            {/* <p style={{color:"red",fontSize:20,cursor:"pointer"}} onClick={()=>dlt(e.id)}>
                                                                 <i className='fas fa-trash smalltrash'></i>
-                                                            </p>
+                                                            </p> */}
                                                         </td>
 
                                                         <td className='mt-5'style={{color:"red",fontSize:20,cursor:"pointer"}}  onClick={()=>dlt(e.id)}>
                                                         <i className='fas fa-trash largetrash'></i>
+                                                        
                                                         </td>
                                                     </tr>
                                                 </>
@@ -118,6 +146,7 @@ const Header = () => {
                                         })
                                     }
                                     <p className='text-center'>Total :₹ {price}</p>
+                                     <Button variant="primary" className='col-lg-12' onClick={order}>Order Now<Button className='btn_qwt_state_price'>{price}</Button></Button>
                                 </tbody>
                             </Table>
                         </div>:
@@ -138,3 +167,4 @@ const Header = () => {
 }
 
 export default Header
+
